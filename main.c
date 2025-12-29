@@ -104,6 +104,14 @@ int main()
 
 	int row, col;
 
+	//Instantiate cells array
+	for (int each_col = 0; each_col < cells_width; each_col++){
+		for (int each_row = 0; each_row < cells_height; each_row++) {
+			cells[each_col][each_row][0] = '-';
+			cells[each_col][each_row][0] = '+';
+		}		
+	}
+
 	struct timespec begin, end;
 	clock_gettime(CLOCK_REALTIME, &begin);
 
