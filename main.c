@@ -4,7 +4,9 @@
 
 int displayCells(int array_width, int array_height, int layer, int cell_array[array_width][array_height][2])
 {
-	int each_row, each_col; 
+	int each_row, each_col;
+	printf("\n");
+	printf("Generation \n");
 	for (each_col = 0; each_col < array_width; each_col++ ) {
 		for (each_row = 0; each_row < array_height; each_row++ ) {
 			printf("%c", cell_array[each_col][each_row][layer]);
@@ -108,7 +110,7 @@ int main()
 	for (int each_col = 0; each_col < cells_width; each_col++){
 		for (int each_row = 0; each_row < cells_height; each_row++) {
 			cells[each_col][each_row][0] = '-';
-			cells[each_col][each_row][0] = '+';
+			cells[each_col][each_row][1] = '-';
 		}		
 	}
 
