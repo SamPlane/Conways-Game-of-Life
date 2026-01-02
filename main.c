@@ -9,7 +9,7 @@ int displayCells(int array_width, int array_height, int layer, int cell_array[ar
 	printf("Generation \n");
 	for (each_col = 0; each_col < array_width; each_col++ ) {
 		for (each_row = 0; each_row < array_height; each_row++ ) {
-			printf("%c", cell_array[each_col][each_row][layer]);
+			printf("%d", cell_array[each_col][each_row][layer]);
 		}
 		printf("\n");
 	}
@@ -17,11 +17,7 @@ int displayCells(int array_width, int array_height, int layer, int cell_array[ar
 
 int getLiveNeighbours(int current_col, int current_row, int array_width, int array_height, int layer, int cell_array[array_width][array_height][2])
 {
-
-	printf("Inside getLiveNeighbours() \n");
-	displayCells(array_width, array_height, 0, cell_array);
 	int live_neighbours = 0;
-
 
 	// It would be nice to figure out a way to perform this check only once instead of every time the func is called
 
@@ -30,20 +26,20 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 	{
 		if (current_col > 0)
 		{
-			if (cell_array[current_col - 1][current_row - 1][layer] == "+")
+			if (cell_array[current_col - 1][current_row - 1][layer] == 1)
 			{
 				live_neighbours++;
 			}
 		}
 
-		if (cell_array[current_col][current_row - 1][layer] == "+")
+		if (cell_array[current_col][current_row - 1][layer] == 1)
 		{
 			live_neighbours++;
 		}
 
 		if (current_col < array_width - 1)
 		{
-			if (cell_array[current_col + 1][current_row - 1][layer] == "+")
+			if (cell_array[current_col + 1][current_row - 1][layer] == 1)
 			{
 				live_neighbours++;
 			}
@@ -52,7 +48,7 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 
 	if (current_col > 0)
 	{
-		if (cell_array[current_col - 1][current_row][layer] == "+")
+		if (cell_array[current_col - 1][current_row][layer] == 1)
 		{
 			live_neighbours++;
 		}
@@ -60,27 +56,17 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 
 	if (current_col < array_width - 1)
 	{
-		/*
-		printf("Co-ords \n");
-		printf("current_col: %d \n",current_col);
-		printf("current_row: %d \n",current_row);
-		printf("layer: %d \n",layer);
-		printf("Cell %c \n",cell_array[current_col + 1][current_row][layer]);
-		*/
-		if (cell_array[current_col + 1][current_row][layer] == "+")
+		if (cell_array[current_col + 1][current_row][layer] == 1)
 		{
 			live_neighbours++;
 		}
 	}
-
-	cell_array[4][5][0] = "+";
-	cell_array[4][6][0] = "+";
 	// Checks the bottom row of surrounding neighbours where applicable
 	if (current_row < array_height - 1)
 	{
 		if (current_col > 0)
 		{
-			if (cell_array[current_col - 1][current_row + 1][layer] == "+")
+			if (cell_array[current_col - 1][current_row + 1][layer] == 1)
 			{
 				live_neighbours++;
 			}
@@ -90,8 +76,8 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 		printf("current_col: %d \n",current_col);
 		printf("current_row: %d \n",current_row);
 		printf("layer: %d \n",layer);
-		printf("Cell '%c' \n",cell_array[current_col][current_row + 1][layer]);
-		if (cell_array[current_col][current_row + 1][layer] == "+")
+		printf("Cell '%d' \n",cell_array[current_col][current_row + 1][layer]);
+		if (cell_array[current_col][current_row + 1][layer] == 1)
 		{
 			live_neighbours++;
 			printf("Live neighbours is not set to %d \n",live_neighbours);
@@ -99,7 +85,7 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 
 		if (current_col < array_width - 1)
 		{
-			if (cell_array[current_col + 1][current_row + 1][layer] == "+")
+			if (cell_array[current_col + 1][current_row + 1][layer] == 1)
 			{
 				live_neighbours++;
 			}
@@ -129,10 +115,13 @@ int main()
 	//Instantiate cells array
 	for (int each_col = 0; each_col < cells_width; each_col++){
 		for (int each_row = 0; each_row < cells_height; each_row++) {
-			cells[each_col][each_row][0] = '-';
-			cells[each_col][each_row][1] = '-';
+			cells[each_col][each_row][0] = 0;
+			cells[each_col][each_row][1] = 0;
 		}
 	}
+
+	cells[4][5][0] = 1;
+	cells[4][6][0] = 1;
 
 	
 	displayCells(cells_width, cells_height, 0, cells);
