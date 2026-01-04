@@ -9,7 +9,7 @@ int displayCells(int array_width, int array_height, int layer, int cell_array[ar
 	printf("Generation \n");
 	for (each_col = 0; each_col < array_width; each_col++ ) {
 		for (each_row = 0; each_row < array_height; each_row++ ) {
-			printf("%d", cell_array[each_col][each_row][layer]);
+			printf("%d", cell_array[each_row][each_col][layer]);
 		}
 		printf("\n");
 	}
@@ -72,15 +72,9 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 			}
 		}
 
-		printf("Co-ords \n");
-		printf("current_col: %d \n",current_col);
-		printf("current_row: %d \n",current_row);
-		printf("layer: %d \n",layer);
-		printf("Cell '%d' \n",cell_array[current_col][current_row + 1][layer]);
 		if (cell_array[current_col][current_row + 1][layer] == 1)
 		{
 			live_neighbours++;
-			printf("Live neighbours is not set to %d \n",live_neighbours);
 		}
 
 		if (current_col < array_width - 1)
@@ -92,7 +86,7 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 		}
 	}
 
-	printf("Live %d \n",live_neighbours);
+	printf("Live neighbours %d \n",live_neighbours);
 	return live_neighbours;
 }
 
@@ -101,7 +95,6 @@ int main()
 
 	const int cells_width = 10;
 	const int cells_height = 10;
-
 	int cells[cells_width][cells_height][2];
 
 	int current_layer = 1;
@@ -120,6 +113,7 @@ int main()
 		}
 	}
 
+	//For testing purposes only
 	cells[4][5][0] = 1;
 	cells[4][6][0] = 1;
 
@@ -142,8 +136,8 @@ int main()
 			}
 		}
 
-		neighbours = getLiveNeighbours(4,5,cells_width,cells_height,0,cells);
-		printf("%d \n",neighbours);
+		//neighbours = getLiveNeighbours(4,5,cells_width,cells_height,0,cells);
+		//printf("%d \n",neighbours);
 
 		// Output current generation
 		displayCells(cells_width, cells_height, current_layer, cells);
@@ -151,7 +145,7 @@ int main()
 		//Swap the working layer
 		current_layer = 1 - current_layer;
 
-		loop = 0; //Remove
+		loop = 0; //Limits to a single generation, remove when all functions are tested
 	}
 
 	clock_gettime(CLOCK_REALTIME, &end);
