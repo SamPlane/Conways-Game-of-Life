@@ -13,7 +13,7 @@ int displayCells(int array_width, int array_height, int layer, int cell_array[ar
 		}
 		printf("\n");
 	}
-}	
+}
 
 int getLiveNeighbours(int current_col, int current_row, int array_width, int array_height, int layer, int cell_array[array_width][array_height][2])
 {
@@ -86,20 +86,21 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 		}
 	}
 
-	printf("Live neighbours %d \n",live_neighbours);
+	//printf("Live neighbours %d \n",live_neighbours);
 	return live_neighbours;
 }
 
 int main()
 {
 
-	const int cells_width = 10;
-	const int cells_height = 10;
+	const int cells_width = 50;
+	const int cells_height = 50;
 	int cells[cells_width][cells_height][2];
 
 	int current_layer = 1;
+	int opposite_layer = 0;
 
-	int loop = 1;
+	int loop = 1000;
 
 	int row, col;
 
@@ -116,7 +117,8 @@ int main()
 	//For testing purposes only
 	cells[4][5][0] = 1;
 	cells[4][6][0] = 1;
-
+	cells[5][5][0] = 1;
+	cells[5][6][0] = 1;
 	
 	displayCells(cells_width, cells_height, 0, cells);
 
@@ -124,7 +126,7 @@ int main()
 	clock_gettime(CLOCK_REALTIME, &begin);
 
 	// Iterates onto the next generation
-	while (loop == 1)
+	while (loop > 1)
 	{
 
 		// Confirm this is the fastest way to iterate through the array, rather than row-wise
@@ -132,20 +134,34 @@ int main()
 		{
 			for (row = 0; row < cells_height; row++)
 			{
-				// printf("Hello \n");
+				neighbours = getLiveNeighbours(col,row,cells_width,cells_height,current_layer,cells);
+				//If a live cell has 2 or 3 live neighbours, it is sustained to the next generation
+				if (cells[col][row][current_layer] == 1){
+					if (neighbours == 2 || neighbours == 3) {
+						cells[col][row][opposite_layer] = 1;
+					} else {
+						//Otherwise it dies by over/underpopulation
+						cells[col][row][opposite_layer] = 1;
+					}
+				} else {
+					//If a dead cell is surrounded by exactly three live cells, it becomes live
+					if (neighbours == 3) {
+						cells[col][row][opposite_layer] = 1;
+					}
+				}
 			}
 		}
 
-		//neighbours = getLiveNeighbours(4,5,cells_width,cells_height,0,cells);
-		//printf("%d \n",neighbours);
+		//Swap the working layer
+		current_layer = 1 - current_layer;
+		opposite_layer = 1 - opposite_layer;
 
 		// Output current generation
 		displayCells(cells_width, cells_height, current_layer, cells);
 
-		//Swap the working layer
-		current_layer = 1 - current_layer;
-
-		loop = 0; //Limits to a single generation, remove when all functions are tested
+		loop = loop - 1;
+		printf ("%d", loop);
+		//loop = 0; //Limits to a single generation, remove when all functions are tested
 	}
 
 	clock_gettime(CLOCK_REALTIME, &end);
