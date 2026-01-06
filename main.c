@@ -97,10 +97,10 @@ int main()
 	const int cells_height = 50;
 	int cells[cells_width][cells_height][2];
 
-	int current_layer = 1;
-	int opposite_layer = 0;
+	int current_layer = 0;
+	int opposite_layer = 1;
 
-	int loop = 1000;
+	int loop = 6;
 
 	int row, col;
 
@@ -114,14 +114,25 @@ int main()
 		}
 	}
 
-	//For testing purposes only
+	//Test configuration - "Blinker"
 	cells[4][5][0] = 1;
 	cells[4][6][0] = 1;
 	cells[4][7][0] = 1;
-	//cells[5][5][0] = 1;
-	//cells[5][6][0] = 1;
+
+	//Test configuration - "Toad"
+	cells[7][25][0] = 1;
+	cells[7][26][0] = 1;
+	cells[7][27][0] = 1;
+	cells[8][26][0] = 1;
+	cells[8][27][0] = 1;
+	cells[8][28][0] = 1;
 	
-	displayCells(cells_width, cells_height, 0, cells);
+	//Test configuration - "Glider"
+	cells[11][9][0] = 1;
+	cells[11][10][0] = 1;
+	cells[11][11][0] = 1;
+	cells[10][11][0] = 1;
+	cells[9][10][0] = 1;
 
 	struct timespec begin, end;
 	clock_gettime(CLOCK_REALTIME, &begin);
@@ -137,6 +148,7 @@ int main()
 			{
 				neighbours = getLiveNeighbours(col,row,cells_width,cells_height,current_layer,cells);
 				//If a live cell has 2 or 3 live neighbours, it is sustained to the next generation
+				
 				if (cells[col][row][current_layer] == 1){
 					if (neighbours == 2 || neighbours == 3) {
 						cells[col][row][opposite_layer] = 1;
@@ -148,6 +160,8 @@ int main()
 					//If a dead cell is surrounded by exactly three live cells, it becomes live
 					if (neighbours == 3) {
 						cells[col][row][opposite_layer] = 1;
+					} else {
+						cells[col][row][opposite_layer] = 0;
 					}
 				}
 			}
