@@ -117,8 +117,9 @@ int main()
 	//For testing purposes only
 	cells[4][5][0] = 1;
 	cells[4][6][0] = 1;
-	cells[5][5][0] = 1;
-	cells[5][6][0] = 1;
+	cells[4][7][0] = 1;
+	//cells[5][5][0] = 1;
+	//cells[5][6][0] = 1;
 	
 	displayCells(cells_width, cells_height, 0, cells);
 
@@ -141,7 +142,7 @@ int main()
 						cells[col][row][opposite_layer] = 1;
 					} else {
 						//Otherwise it dies by over/underpopulation
-						cells[col][row][opposite_layer] = 1;
+						cells[col][row][opposite_layer] = 0;
 					}
 				} else {
 					//If a dead cell is surrounded by exactly three live cells, it becomes live
