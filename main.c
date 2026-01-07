@@ -149,7 +149,6 @@ int main()
 	// Iterates onto the next generation
 	while (loop > 1)
 	{
-
 		// Confirm this is the fastest way to iterate through the array, rather than row-wise
 		for (col = 0; col < cells_width; col++)
 		{
