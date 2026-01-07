@@ -2,11 +2,11 @@
 #include "stdlib.h"
 #include "time.h"
 
-int displayCells(int array_width, int array_height, int layer, int cell_array[array_width][array_height][2])
+int displayCells(int array_width, int array_height, int layer, int cell_array[array_width][array_height][2], int generation)
 {
 	int each_row, each_col;
 	printf("\n");
-	printf("Generation \n");
+	printf("Generation %d\n",generation);
 	for (each_col = 0; each_col < array_width; each_col++ ) {
 		for (each_row = 0; each_row < array_height; each_row++ ) {
 			printf("%d", cell_array[each_row][each_col][layer]);
@@ -103,8 +103,9 @@ int main()
 	int loop = 6;
 
 	int row, col;
+	int gen = 1;
 
-	int neighbours; // Remove once getLiveNeighbours has been tested
+	int neighbours;
 
 	//Instantiate cells array
 	for (int each_col = 0; each_col < cells_width; each_col++){
@@ -133,6 +134,14 @@ int main()
 	cells[11][11][0] = 1;
 	cells[10][11][0] = 1;
 	cells[9][10][0] = 1;
+
+	//Test configuration - Edge Case
+	cells[0][0][0] = 1;
+	cells[0][1][0] = 1;
+	cells[0][2][0] = 1;
+
+	//Displays initial configuration of cells
+	displayCells(cells_width, cells_height, current_layer, cells, gen);
 
 	struct timespec begin, end;
 	clock_gettime(CLOCK_REALTIME, &begin);
@@ -171,12 +180,11 @@ int main()
 		current_layer = 1 - current_layer;
 		opposite_layer = 1 - opposite_layer;
 
-		// Output current generation
-		displayCells(cells_width, cells_height, current_layer, cells);
+		// Displays the cells after they have been modified according to their configuration
+		displayCells(cells_width, cells_height, current_layer, cells, gen);
 
 		loop = loop - 1;
-		printf ("%d", loop);
-		//loop = 0; //Limits to a single generation, remove when all functions are tested
+		gen++;
 	}
 
 	clock_gettime(CLOCK_REALTIME, &end);
@@ -184,7 +192,7 @@ int main()
 	long nanoseconds = end.tv_nsec - begin.tv_nsec;
 	double elapsed = seconds + nanoseconds * 1e-9;
 
-	printf("Time measured: %.3f seconds. \n elapsed");
+	printf("Time measured: %.3f seconds. \n", elapsed);
 
 	return 0;
 }
