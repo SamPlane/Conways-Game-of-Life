@@ -100,7 +100,7 @@ int main()
 	int current_layer = 0;
 	int opposite_layer = 1;
 
-	int loop = 6;
+	int loop = 100;
 
 	int row, col;
 	int gen = 1;
