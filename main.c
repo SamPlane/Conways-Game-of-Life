@@ -9,7 +9,6 @@ int displayCells(int array_width, int array_height, int layer, int cell_array[ar
 	printf("Generation %d\n",generation);
 	for (each_col = 0; each_col < array_width; each_col++ ) {
 		for (each_row = 0; each_row < array_height; each_row++ ) {
-			//As values are printed horizontally, we do not use row-wise traversal here
 			printf("%d", cell_array[each_row][each_col][layer]);
 		}
 		printf("\n");
