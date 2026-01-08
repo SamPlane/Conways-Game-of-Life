@@ -108,26 +108,38 @@ int main()
 	int current_layer = 0;
 	int opposite_layer = 1;
 
-	int loop = 100;
+	int loop = 1000;
 
 	int row, col;
 	int gen = 1;
 
+
 	int neighbours;
 
+	int random_no;
+	srand(time(NULL)); // Generates seed for random number generator based on the current time
 
 	/*As C is a Row-Wise Language, we iterate on the second dimension rather than the first to bring
-	as many values about to be used into the cache as possible*/
+	as many values about to be used into the cache as possible with each fetch from memory*/
 
 	//Instantiate cells array
 	for (int each_col = 0; each_col < cells_width; each_col++){
 		for (int each_row = 0; each_row < cells_height; each_row++) {
-			cells[each_col][each_row][0] = 0;
-			cells[each_col][each_row][1] = 0;
+			//Randomly determines the status of each cell
+
+			random_no = rand() % 5;
+			if (random_no < 3) {
+				cells[each_col][each_row][0] = 1;
+				cells[each_col][each_row][1] = 1;
+			} else {
+				cells[each_col][each_row][0] = 0;
+				cells[each_col][each_row][1] = 0;
+			}
 		}
 	}
 
 
+	/*
 	//Test configuration - "Blinker"
 	cells[4][5][0] = 1;
 	cells[4][6][0] = 1;
@@ -152,6 +164,7 @@ int main()
 	cells[0][0][0] = 1;
 	cells[0][1][0] = 1;
 	cells[0][2][0] = 1;
+	*/
 	
 
 	//Displays initial configuration of cells
