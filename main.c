@@ -94,8 +94,8 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 int main()
 {
 
-	const int cells_width = 80;
-	const int cells_height = 80;
+	const int cells_width = 100;
+	const int cells_height = 100;
 
 	/*
 	The chosen approach of using a 3d array, representing a 2d grid across 2 layers is to prevent
@@ -108,7 +108,7 @@ int main()
 	int current_layer = 0;
 	int opposite_layer = 1;
 
-	int loop = 1000;
+	int loop = 1000000;
 
 	int row, col;
 	int gen = 1;
@@ -209,9 +209,6 @@ int main()
 		current_layer = 1 - current_layer;
 		opposite_layer = 1 - opposite_layer;
 
-		// Displays the cells after they have been modified according to their configuration
-		displayCells(cells_width, cells_height, current_layer, cells, gen);
-
 		loop = loop - 1;
 		gen++;
 	}
@@ -220,6 +217,9 @@ int main()
 	long seconds = end.tv_sec - begin.tv_sec;
 	long nanoseconds = end.tv_nsec - begin.tv_nsec;
 	double elapsed = seconds + nanoseconds * 1e-9;
+
+	// Displays the cells after 1 million generations
+	displayCells(cells_width, cells_height, current_layer, cells, gen);
 
 	printf("Time measured: %.3f seconds. \n", elapsed);
 
