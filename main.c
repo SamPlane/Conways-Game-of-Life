@@ -9,6 +9,7 @@ int displayCells(int array_width, int array_height, int layer, int cell_array[ar
 	printf("Generation %d\n",generation);
 	for (each_col = 0; each_col < array_width; each_col++ ) {
 		for (each_row = 0; each_row < array_height; each_row++ ) {
+			//As values must be printed horizontally, we iterate through the first dimension rather than the second
 			printf("%d", cell_array[each_row][each_col][layer]);
 		}
 		printf("\n");
@@ -93,8 +94,15 @@ int getLiveNeighbours(int current_col, int current_row, int array_width, int arr
 int main()
 {
 
-	const int cells_width = 50;
-	const int cells_height = 50;
+	const int cells_width = 80;
+	const int cells_height = 80;
+
+	/*
+	The chosen approach of using a 3d array, representing a 2d grid across 2 layers is to prevent
+	the need for determining the status of each cell in the next generation, writing this to a second array,
+	then copying these back to the first array. Instead, once the cell's future status has been determined 
+	and written, we can simply swap layers to avoid such an expensive operation.
+	*/
 	int cells[cells_width][cells_height][2];
 
 	int current_layer = 0;
@@ -107,6 +115,10 @@ int main()
 
 	int neighbours;
 
+
+	/*As C is a Row-Wise Language, we iterate on the second dimension rather than the first to bring
+	as many values about to be used into the cache as possible*/
+
 	//Instantiate cells array
 	for (int each_col = 0; each_col < cells_width; each_col++){
 		for (int each_row = 0; each_row < cells_height; each_row++) {
@@ -114,6 +126,7 @@ int main()
 			cells[each_col][each_row][1] = 0;
 		}
 	}
+
 
 	//Test configuration - "Blinker"
 	cells[4][5][0] = 1;
@@ -139,6 +152,7 @@ int main()
 	cells[0][0][0] = 1;
 	cells[0][1][0] = 1;
 	cells[0][2][0] = 1;
+	
 
 	//Displays initial configuration of cells
 	displayCells(cells_width, cells_height, current_layer, cells, gen);
@@ -149,14 +163,17 @@ int main()
 	// Iterates onto the next generation
 	while (loop > 1)
 	{
-		// Confirm this is the fastest way to iterate through the array, rather than row-wise
+
+		/*I have not implemented loop unrolling as this can be automatically performed by gcc at compiler
+		optimisation level -O3*/
+
+		//Determine if each cell will be alive or dead in the next generation, and store in opposite_layer
 		for (col = 0; col < cells_width; col++)
 		{
 			for (row = 0; row < cells_height; row++)
 			{
 				neighbours = getLiveNeighbours(col,row,cells_width,cells_height,current_layer,cells);
 				//If a live cell has 2 or 3 live neighbours, it is sustained to the next generation
-				
 				if (cells[col][row][current_layer] == 1){
 					if (neighbours == 2 || neighbours == 3) {
 						cells[col][row][opposite_layer] = 1;
