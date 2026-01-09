@@ -117,7 +117,8 @@ int main()
 	int neighbours;
 
 	int random_no;
-	srand(time(NULL)); // Generates seed for random number generator based on the current time
+	//srand(time(NULL)); // Generates seed for random number generator based on the current time
+	srand(2245);
 
 	/*As C is a Row-Wise Language, we iterate on the second dimension rather than the first to bring
 	as many values about to be used into the cache as possible with each fetch from memory*/
@@ -181,6 +182,7 @@ int main()
 		optimisation level -O3*/
 
 		//Determine if each cell will be alive or dead in the next generation, and store in opposite_layer
+		#pragma omp parallel for
 		for (col = 0; col < cells_width; col++)
 		{
 			for (row = 0; row < cells_height; row++)
