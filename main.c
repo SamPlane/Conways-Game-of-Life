@@ -110,11 +110,12 @@ int main()
 
 	int loop = 1000000;
 
-	int row, col;
+	//int row, col;
+	int col;
 	int gen = 1;
 
 
-	int neighbours;
+	//int neighbours;
 
 	int random_no;
 	//srand(time(NULL)); // Generates seed for random number generator based on the current time
@@ -185,8 +186,10 @@ int main()
 		#pragma omp parallel for
 		for (col = 0; col < cells_width; col++)
 		{
+			int row, neighbours;
 			for (row = 0; row < cells_height; row++)
 			{
+				//This needs to be local to each thread!
 				neighbours = getLiveNeighbours(col,row,cells_width,cells_height,current_layer,cells);
 				//If a live cell has 2 or 3 live neighbours, it is sustained to the next generation
 				if (cells[col][row][current_layer] == 1){
